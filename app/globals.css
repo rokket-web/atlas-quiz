@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Dancing+Script:wght@700&display=swap');
+@import "tailwindcss";
+
+:root {
+  --bg: #231F20;
+  --yellow: #ffcd2b;
+  --white: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  background-color: var(--bg);
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  color: var(--white);
+  overflow: hidden;
+}
+
+.font-script {
+  font-family: 'Dancing Script', cursive;
+  font-weight: 700;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+/* Police tape scroll */
+@keyframes tape-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.tape-track {
+  animation: tape-scroll 10s linear infinite;
+}
+
+/* Static / glitch flicker */
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.92; }
+}
+
+.glitch-flicker {
+  animation: flicker 0.12s infinite;
+}
