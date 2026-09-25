@@ -5,6 +5,7 @@ import { questions } from "@/data/quiz";
 import LandingScreen from "@/components/LandingScreen";
 import QuestionScreen from "@/components/QuestionScreen";
 import FeedbackScreen from "@/components/FeedbackScreen";
+import ErrorScreen from "@/components/ErrorScreen";
 import ClosingScreen from "@/components/ClosingScreen";
 import DonateScreen from "@/components/DonateScreen";
 
@@ -12,6 +13,7 @@ type Phase =
   | { name: "landing" }
   | { name: "question"; index: number }
   | { name: "feedback"; index: number; isCorrect: boolean }
+  | { name: "error" }
   | { name: "closing" }
   | { name: "donate" };
 

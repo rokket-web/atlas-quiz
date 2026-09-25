@@ -2,18 +2,20 @@
 
 import { useEffect, useState } from "react";
 
-interface ClosingScreenProps {
+interface ErrorScreenProps {
   onContinue: () => void;
 }
 
-export default function ClosingScreen({ onContinue }: ClosingScreenProps) {
+export default function ErrorScreen({ onContinue }: ErrorScreenProps) {
   const [flash, setFlash] = useState(false);
 
   useEffect(() => {
+    // Flash interval — toggle every 300ms
     const interval = setInterval(() => {
       setFlash((f) => !f);
     }, 300);
 
+    // After 5 seconds, proceed
     const timeout = setTimeout(() => {
       clearInterval(interval);
       onContinue();
@@ -27,23 +29,21 @@ export default function ClosingScreen({ onContinue }: ClosingScreenProps) {
 
   return (
     <div
-      className="flex flex-col items-center justify-center h-full w-full transition-colors text-center px-8"
+      className="flex items-center justify-center h-full w-full transition-colors"
       style={{
         backgroundColor: flash ? "#cc0000" : "#ffffff",
       }}
     >
       <p
-        className="font-black leading-tight"
+        className="font-black tracking-widest select-none"
         style={{
           fontFamily: "'Garet', sans-serif",
-          fontSize: "clamp(1.5rem, 4vw, 3rem)",
+          fontSize: "clamp(4rem, 12vw, 9rem)",
           color: flash ? "#ffffff" : "#cc0000",
           transition: "color 0.05s",
         }}
       >
-        HUMAN TRAFFICKING HAS
-        <br />
-        DETECTED A THREAT
+        ERROR!
       </p>
     </div>
   );
