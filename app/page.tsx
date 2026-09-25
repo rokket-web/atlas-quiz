@@ -21,6 +21,7 @@ type Phase =
 
 export default function Home() {
   const [phase, setPhase] = useState<Phase>({ name: "landing" });
+  const [quizKey, setQuizKey] = useState(0);
 
   function handleStart() {
     setPhase({ name: "question", index: 0 });
@@ -53,6 +54,11 @@ export default function Home() {
     setPhase({ name: "donate" });
   }
 
+  function handleDonateComplete() {
+    setQuizKey((k) => k + 1);
+    setPhase({ name: "landing" });
+  }
+
   const screenKey =
     phase.name === "feedback"
       ? `feedback-${phase.index}-${phase.isCorrect}`
@@ -65,7 +71,7 @@ export default function Home() {
       className="fixed inset-0 overflow-hidden"
       style={{ backgroundColor: "#231F20" }}
     >
-      <div key={screenKey} className="h-full w-full">
+      <div key={`${quizKey}-${screenKey}`} className="h-full w-full">
         {phase.name === "landing" && (
           <LandingScreen onStart={handleStart} />
         )}
@@ -98,7 +104,7 @@ export default function Home() {
           <OptInScreen onContinue={handleOptInContinue} />
         )}
 
-        {phase.name === "donate" && <DonateScreen />}
+        {phase.name === "donate" && <DonateScreen onComplete={handleDonateComplete} />}
       </div>
     </div>
   );

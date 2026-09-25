@@ -2,12 +2,16 @@
 
 import { useEffect, useRef, useState } from "react";
 
-export default function DonateScreen() {
-  const [showCheckout, setShowCheckout] = useState(false);
+interface DonateScreenProps {
+  onComplete: () => void;
+}
+
+export default function DonateScreen({ onComplete }: DonateScreenProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [flashing, setFlashing] = useState(false);
+  const [flashColor, setFlashColor] = useState(false);
 
   useEffect(() => {
-    if (!showCheckout) return;
     const searchParams = new URLSearchParams(window.location.search);
     const validUrlParams = ["c_src", "c_src2", "amount", "recurring", "designation"];
     const appendUrlParams = validUrlParams.reduce((acc, key) => {
@@ -18,11 +22,42 @@ export default function DonateScreen() {
     if (iframeRef.current && appendUrlParams) {
       iframeRef.current.src += appendUrlParams;
     }
-  }, [showCheckout]);
+
+    // Listen for Classy donation completion via postMessage
+    function handleMessage(e: MessageEvent) {
+      if (
+        typeof e.data === "object" &&
+        e.data !== null &&
+        (e.data.type === "classy:checkout:success" ||
+          e.data.event === "donation:success" ||
+          e.data.event === "checkout:success")
+      ) {
+        triggerFlash();
+      }
+    }
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
+
+  function triggerFlash() {
+    setFlashing(true);
+    // Flash every 300ms for 2 seconds, then 100ms dark pause, then restart
+    let count = 0;
+    const interval = setInterval(() => {
+      setFlashColor((f) => !f);
+      count++;
+    }, 300);
+
+    setTimeout(() => {
+      clearInterval(interval);
+      setFlashing(false);
+      setTimeout(onComplete, 100);
+    }, 2000);
+  }
 
   return (
     <div
-      className="animate-fade-in flex items-center justify-center h-full w-full"
+      className="animate-fade-in flex flex-col items-center justify-start gap-5 h-full w-full overflow-y-auto py-8"
       style={{
         backgroundImage: "url('/card-bg.png')",
         backgroundSize: "cover",
@@ -32,116 +67,83 @@ export default function DonateScreen() {
       {/* Overlay */}
       <div className="absolute inset-0" style={{ backgroundColor: "rgba(0,0,0,0.48)" }} />
 
-      {showCheckout ? (
-        /* Classy checkout iframe */
-        <div className="relative flex flex-col items-center gap-4">
-          <iframe
-            ref={iframeRef}
-            id="classy-iframe"
-            // @ts-expect-error allowpaymentrequest is a non-standard attribute
-            allowpaymentrequest="true"
-            src="https://give.atlasfree.org/give/413670/#!/donation/checkout?eg=true&egfa=true"
-            style={{
-              width: 345,
-              height: 520,
-              backgroundColor: "#fff",
-              border: "none",
-              borderRadius: "1.5rem",
-            }}
-          />
-          <button
-            onClick={() => setShowCheckout(false)}
-            className="font-black rounded-2xl px-10 py-4 tracking-widest transition-opacity hover:opacity-90 active:scale-95"
-            style={{
-              backgroundColor: "#ffcd2b",
-              color: "#231F20",
-              fontFamily: "'Garet', sans-serif",
-              fontSize: "clamp(0.85rem, 1.5vw, 1rem)",
-              border: "none",
-              cursor: "pointer",
-              letterSpacing: "0.15em",
-            }}
-          >
-            I'M NOT READY
-          </button>
-        </div>
-      ) : (
-        /* Pitch card */
-        <div
-          className="relative flex flex-col items-center text-center rounded-2xl px-8 py-10 w-full mx-6"
+      {/* White card */}
+      <div
+        className="relative flex flex-col items-center text-center rounded-2xl w-full mx-6"
+        style={{
+          backgroundColor: "#ffffff",
+          maxWidth: 560,
+          padding: "40px",
+          gap: "1.2rem",
+        }}
+      >
+        {/* Logo */}
+        <img
+          src="/atlas-logo.png"
+          alt="Atlas Free"
+          style={{ width: 72, height: 72, objectFit: "contain" }}
+        />
+
+        {/* Copy */}
+        <p
           style={{
-            backgroundColor: "#ffffff",
-            maxWidth: 560,
-            gap: "1.1rem",
+            fontFamily: "'Garet', sans-serif",
+            fontSize: "clamp(0.95rem, 2vw, 1.2rem)",
+            color: "#231F20",
+            lineHeight: 1.55,
           }}
         >
-          {/* Logo */}
-          <img
-            src="/atlas-logo.png"
-            alt="Atlas Free"
-            style={{ width: 72, height: 72, objectFit: "contain" }}
-          />
+          <span style={{ color: "#2954ff", fontWeight: 800 }}>Before we lose you…</span>
+          <br />
+          <span style={{ fontWeight: 800 }}>Will you give $27.60 for the 27.6 million people trapped in trafficking to fund their rescue and help dismantle the business of exploitation?</span>
+        </p>
 
-          {/* Copy */}
-          <p
-            className="leading-snug"
-            style={{
-              fontFamily: "'Garet', sans-serif",
-              fontSize: "clamp(0.95rem, 2vw, 1.2rem)",
-              color: "#231F20",
-              lineHeight: 1.55,
-            }}
-          >
-            <span style={{ color: "#2954ff", fontWeight: 800 }}>Before we lose you…</span>
-            <br />
-            Will you give $27.60 for the 27.6 million people trapped in trafficking to fund their rescue and help dismantle the business of exploitation?
-          </p>
+        {/* Donate widget */}
+        <iframe
+          ref={iframeRef}
+          id="classy-iframe"
+          // @ts-expect-error allowpaymentrequest is a non-standard attribute
+          allowpaymentrequest="true"
+          src="https://give.atlasfree.org/give/413670/#!/donation/checkout?eg=true&egfa=true"
+          style={{
+            width: "100%",
+            height: 520,
+            backgroundColor: "#fff",
+            border: "none",
+            borderRadius: "5px",
+          }}
+        />
+      </div>
 
-          {/* Person image */}
-          <img
-            src="/donate-person.png"
-            alt=""
-            style={{
-              width: "100%",
-              maxHeight: 200,
-              objectFit: "cover",
-              borderRadius: "1rem",
-            }}
-          />
+      {/* Yellow button — outside the card */}
+      <button
+        onClick={triggerFlash}
+        className="relative font-black transition-opacity hover:opacity-90 active:scale-95"
+        style={{
+          backgroundColor: "#ffcd2b",
+          color: "#231F20",
+          fontFamily: "'Garet', sans-serif",
+          fontWeight: 800,
+          fontSize: "1.1rem",
+          padding: "1.1rem 3.5rem",
+          borderRadius: "1rem",
+          border: "none",
+          cursor: "pointer",
+        }}
+      >
+        I'M NOT READY
+      </button>
 
-          {/* Donate button */}
-          <button
-            onClick={() => setShowCheckout(true)}
-            className="w-full font-black rounded-2xl py-4 tracking-widest transition-opacity hover:opacity-90 active:scale-95"
-            style={{
-              backgroundColor: "#2954ff",
-              color: "#ffffff",
-              fontFamily: "'Garet', sans-serif",
-              fontSize: "clamp(0.9rem, 1.6vw, 1.1rem)",
-              border: "none",
-              cursor: "pointer",
-              letterSpacing: "0.2em",
-            }}
-          >
-            DONATE
-          </button>
-
-          {/* Not ready button */}
-          <button
-            className="w-full font-black rounded-2xl py-4 tracking-widest transition-opacity hover:opacity-90 active:scale-95"
-            style={{
-              backgroundColor: "#ffcd2b",
-              color: "#231F20",
-              fontFamily: "'Garet', sans-serif",
-              fontSize: "clamp(0.9rem, 1.6vw, 1.1rem)",
-              border: "none",
-              cursor: "pointer",
-              letterSpacing: "0.15em",
-            }}
-          >
-            I'M NOT READY
-          </button>
-        </div>
+      {/* Flash overlay — full screen, video placeholder */}
+      {flashing && (
+        <div
+          className="fixed inset-0"
+          style={{
+            backgroundColor: flashColor ? "#cc0000" : "#ffffff",
+            zIndex: 100,
+            transition: "background-color 0.05s",
+          }}
+        />
       )}
     </div>
   );

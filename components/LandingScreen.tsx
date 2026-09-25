@@ -19,10 +19,10 @@ export default function LandingScreen({ onStart }: LandingScreenProps) {
 
       <h1
         className="font-black leading-tight"
-        style={{ marginBottom: "2em" }}
         style={{
           fontFamily: "'Garet', sans-serif",
           fontSize: "clamp(3rem, 8vw, 6rem)",
+          marginBottom: ".5em",
           color: "#ffffff",
           lineHeight: 1.05,
         }}
