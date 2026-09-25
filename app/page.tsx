@@ -7,6 +7,7 @@ import QuestionScreen from "@/components/QuestionScreen";
 import FeedbackScreen from "@/components/FeedbackScreen";
 import ErrorScreen from "@/components/ErrorScreen";
 import ClosingScreen from "@/components/ClosingScreen";
+import OptInScreen from "@/components/OptInScreen";
 import DonateScreen from "@/components/DonateScreen";
 
 type Phase =
@@ -15,6 +16,7 @@ type Phase =
   | { name: "feedback"; index: number; isCorrect: boolean }
   | { name: "error" }
   | { name: "closing" }
+  | { name: "optin" }
   | { name: "donate" };
 
 export default function Home() {
@@ -35,11 +37,19 @@ export default function Home() {
     if (nextIndex < questions.length) {
       setPhase({ name: "question", index: nextIndex });
     } else {
-      setPhase({ name: "closing" });
+      setPhase({ name: "error" });
     }
   }
 
+  function handleErrorDone() {
+    setPhase({ name: "closing" });
+  }
+
   function handleContinue() {
+    setPhase({ name: "optin" });
+  }
+
+  function handleOptInContinue() {
     setPhase({ name: "donate" });
   }
 
@@ -76,8 +86,16 @@ export default function Home() {
           />
         )}
 
+        {phase.name === "error" && (
+          <ErrorScreen onContinue={handleErrorDone} />
+        )}
+
         {phase.name === "closing" && (
           <ClosingScreen onContinue={handleContinue} />
+        )}
+
+        {phase.name === "optin" && (
+          <OptInScreen onContinue={handleOptInContinue} />
         )}
 
         {phase.name === "donate" && <DonateScreen />}
