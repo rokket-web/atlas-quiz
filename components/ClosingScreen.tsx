@@ -59,7 +59,7 @@ export default function ClosingScreen({ onContinue }: ClosingScreenProps) {
             width: "200%",
             backgroundColor: "#ffcd2b",
             color: "#231F20",
-            fontFamily: "'Nunito', sans-serif",
+            fontFamily: "'Garet', sans-serif",
             fontWeight: 900,
             fontSize: "clamp(0.75rem, 1.4vw, 1rem)",
             padding: "10px 0",
@@ -82,7 +82,7 @@ export default function ClosingScreen({ onContinue }: ClosingScreenProps) {
             width: "200%",
             backgroundColor: "#ffcd2b",
             color: "#231F20",
-            fontFamily: "'Nunito', sans-serif",
+            fontFamily: "'Garet', sans-serif",
             fontWeight: 900,
             fontSize: "clamp(0.75rem, 1.4vw, 1rem)",
             padding: "10px 0",
@@ -110,7 +110,7 @@ export default function ClosingScreen({ onContinue }: ClosingScreenProps) {
           <p
             className="font-black leading-tight mb-6"
             style={{
-              fontFamily: "'Nunito', sans-serif",
+              fontFamily: "'Garet', sans-serif",
               fontSize: "clamp(1.2rem, 2.5vw, 1.8rem)",
               color: "#cc0000",
             }}
@@ -127,7 +127,7 @@ export default function ClosingScreen({ onContinue }: ClosingScreenProps) {
               style={{
                 backgroundColor: "#231F20",
                 color: "#ffcd2b",
-                fontFamily: "'Nunito', sans-serif",
+                fontFamily: "'Garet', sans-serif",
                 fontSize: "clamp(0.85rem, 1.4vw, 1rem)",
               }}
             >

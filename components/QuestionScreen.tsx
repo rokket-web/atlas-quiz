@@ -17,7 +17,7 @@ export default function QuestionScreen({ question, onAnswer }: QuestionScreenPro
       <h1
         className="font-black leading-tight"
         style={{
-          fontFamily: "'Nunito', sans-serif",
+          fontFamily: "'Garet', sans-serif",
           fontSize: "clamp(2.2rem, 4.5vw, 3.8rem)",
           color: "#ffffff",
           maxWidth: "800px",
@@ -41,7 +41,7 @@ export default function QuestionScreen({ question, onAnswer }: QuestionScreenPro
       <p
         className="leading-relaxed"
         style={{
-          fontFamily: "'Nunito', sans-serif",
+          fontFamily: "'Garet', sans-serif",
           fontSize: "clamp(1.1rem, 2vw, 1.4rem)",
           color: "#ffffff",
           maxWidth: "640px",
@@ -61,7 +61,7 @@ export default function QuestionScreen({ question, onAnswer }: QuestionScreenPro
             style={{
               backgroundColor: "#ffcd2b",
               color: "#231F20",
-              fontFamily: "'Nunito', sans-serif",
+              fontFamily: "'Garet', sans-serif",
               fontSize: "clamp(1rem, 1.6vw, 1.2rem)",
               minWidth: "180px",
               padding: "1rem 2rem",

@@ -12,7 +12,7 @@ export default function LandingScreen({ onStart }: LandingScreenProps) {
     >
       <p
         className="text-lg font-bold mb-4 tracking-wide"
-        style={{ color: "#ffcd2b", fontFamily: "'Nunito', sans-serif" }}
+        style={{ color: "#ffcd2b", fontFamily: "'Garet', sans-serif" }}
       >
         get to know
       </p>
@@ -20,7 +20,7 @@ export default function LandingScreen({ onStart }: LandingScreenProps) {
       <h1
         className="font-black leading-tight mb-10"
         style={{
-          fontFamily: "'Nunito', sans-serif",
+          fontFamily: "'Garet', sans-serif",
           fontSize: "clamp(3rem, 8vw, 6rem)",
           color: "#ffffff",
           lineHeight: 1.05,
@@ -38,7 +38,7 @@ export default function LandingScreen({ onStart }: LandingScreenProps) {
         style={{
           backgroundColor: "#ffcd2b",
           color: "#231F20",
-          fontFamily: "'Nunito', sans-serif",
+          fontFamily: "'Garet', sans-serif",
           fontWeight: 800,
           fontSize: "1.1rem",
           padding: "1.1rem 3.5rem",

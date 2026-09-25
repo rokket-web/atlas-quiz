@@ -30,7 +30,7 @@ export default function FeedbackScreen({
       <h2
         className="font-black"
         style={{
-          fontFamily: "'Nunito', sans-serif",
+          fontFamily: "'Garet', sans-serif",
           fontSize: "clamp(2.2rem, 4.5vw, 3.8rem)",
           color: "#ffffff",
           marginBottom: "clamp(1rem, 2vh, 1.5rem)",
@@ -43,7 +43,7 @@ export default function FeedbackScreen({
       <p
         className="leading-relaxed"
         style={{
-          fontFamily: "'Nunito', sans-serif",
+          fontFamily: "'Garet', sans-serif",
           fontSize: "clamp(1.1rem, 2vw, 1.35rem)",
           color: "#ffffff",
           maxWidth: "620px",
@@ -65,7 +65,7 @@ export default function FeedbackScreen({
             style={{
               backgroundColor: answer.isCorrect ? "#f5f5f5" : "#ffcd2b",
               color: "#231F20",
-              fontFamily: "'Nunito', sans-serif",
+              fontFamily: "'Garet', sans-serif",
               fontSize: "clamp(1rem, 1.6vw, 1.2rem)",
               minWidth: "180px",
               padding: "1rem 2rem",
@@ -86,7 +86,7 @@ export default function FeedbackScreen({
           backgroundColor: "transparent",
           border: "2px solid #ffcd2b",
           color: "#ffcd2b",
-          fontFamily: "'Nunito', sans-serif",
+          fontFamily: "'Garet', sans-serif",
           fontSize: "clamp(1rem, 1.6vw, 1.2rem)",
           padding: "0.9rem 2.5rem",
           borderRadius: "1rem",

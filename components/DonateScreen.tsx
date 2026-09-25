@@ -43,7 +43,7 @@ export default function DonateScreen() {
 
       <p
         className="mt-5 font-bold text-sm opacity-50"
-        style={{ fontFamily: "'Nunito', sans-serif", color: "#ffffff" }}
+        style={{ fontFamily: "'Garet', sans-serif", color: "#ffffff" }}
       >
         I'M NOT READY
       </p>
