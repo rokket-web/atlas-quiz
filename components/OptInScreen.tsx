@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 export interface OptInSignup {
   firstName: string;
@@ -29,11 +29,12 @@ type VirtuousWindow = Window & {
 export default function OptInScreen({ onContinue, onSignup }: OptInScreenProps) {
   const formRef = useRef<HTMLDivElement>(null);
   const onSignupRef = useRef(onSignup);
-  const [submitted, setSubmitted] = useState(false);
+  const onContinueRef = useRef(onContinue);
 
   useEffect(() => {
     onSignupRef.current = onSignup;
-  }, [onSignup]);
+    onContinueRef.current = onContinue;
+  }, [onSignup, onContinue]);
 
   useEffect(() => {
     const container = formRef.current;
@@ -45,8 +46,9 @@ export default function OptInScreen({ onContinue, onSignup }: OptInScreenProps) 
     w.VirtuousForms.settings = {
       ...w.VirtuousForms.settings,
       onSuccess: (data) => {
-        setSubmitted(true);
         onSignupRef.current?.({ firstName: data.firstName, lastName: data.lastName, email: data.email });
+        // Go straight to the donate screen once the opt-in is saved
+        onContinueRef.current();
       },
     };
 
@@ -144,29 +146,6 @@ export default function OptInScreen({ onContinue, onSignup }: OptInScreenProps) 
 
           {/* Virtuous email opt-in form */}
           <div ref={formRef} className="optin-form w-full text-left" />
-
-          {/* Continue — fades in once the Virtuous form has been submitted */}
-          {submitted && (
-            <div className="animate-fade-in w-full">
-              <button
-                onClick={onContinue}
-                className="w-full font-black tracking-widest transition-opacity hover:opacity-90 active:scale-95"
-                style={{
-                  backgroundColor: "#2954ff",
-                  color: "#ffffff",
-                  fontFamily: "'Garet', sans-serif",
-                  fontSize: "clamp(0.9rem, 1.6vw, 1.1rem)",
-                  border: "none",
-                  cursor: "pointer",
-                  letterSpacing: "0.2em",
-                  borderRadius: "5px",
-                  padding: "10px 16px",
-                }}
-              >
-                CONTINUE
-              </button>
-            </div>
-          )}
         </div>
       </div>
     </div>

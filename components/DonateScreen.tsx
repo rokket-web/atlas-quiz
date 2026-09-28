@@ -1,10 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 interface DonateScreenProps {
   onComplete: () => void;
 }
+
+// Origins allowed to post GoFundMe Pro (Classy) checkout messages
+const GOFUNDME_ORIGINS = ["https://giving.gofundme.com", "https://giving.classy.org"];
 
 type GoFundMeWindow = Window & {
   eg?: { init: (config: { win: Window }) => Promise<unknown>; destroy: () => void };
@@ -12,6 +16,7 @@ type GoFundMeWindow = Window & {
 
 export default function DonateScreen({ onComplete }: DonateScreenProps) {
   const [showVideo, setShowVideo] = useState(false);
+  const outroStarted = useRef(false);
 
   useEffect(() => {
     // GoFundMe SDK only scans for [classy] embeds when it initializes. On first visit the script below loads after
@@ -21,27 +26,33 @@ export default function DonateScreen({ onComplete }: DonateScreenProps) {
       w.eg.destroy();
       w.eg.init({ win: window });
     }
-    return () => w.eg?.destroy();
+    return () => {
+      w.eg?.destroy();
+      // Remove any checkout overlay the SDK left in <body> (e.g. after a completed donation)
+      document.querySelectorAll("eg-modal").forEach((el) => el.remove());
+    };
   }, []);
 
   useEffect(() => {
-    // Listen for Classy donation completion via postMessage
+    // GoFundMe Pro checkout posts DONATION_COMPLETED_MSG_FROM_APP when a donation goes through.
+    // Wait 3 seconds so the donor sees GoFundMe's thank-you screen before the outro.
+    let outroTimer: ReturnType<typeof setTimeout> | undefined;
     function handleMessage(e: MessageEvent) {
-      if (
-        typeof e.data === "object" &&
-        e.data !== null &&
-        (e.data.type === "classy:checkout:success" ||
-          e.data.event === "donation:success" ||
-          e.data.event === "checkout:success")
-      ) {
-        playOutro();
+      if (!GOFUNDME_ORIGINS.includes(e.origin)) return;
+      if (e.data?.type === "DONATION_COMPLETED_MSG_FROM_APP" && !outroTimer) {
+        outroTimer = setTimeout(playOutro, 3000);
       }
     }
     window.addEventListener("message", handleMessage);
-    return () => window.removeEventListener("message", handleMessage);
+    return () => {
+      window.removeEventListener("message", handleMessage);
+      clearTimeout(outroTimer);
+    };
   }, []);
 
   function playOutro() {
+    if (outroStarted.current) return;
+    outroStarted.current = true;
     setShowVideo(true);
     // Play background video for 2 seconds, then 100ms pause, then restart
     setTimeout(() => {
@@ -132,16 +143,19 @@ export default function DonateScreen({ onComplete }: DonateScreenProps) {
         </button>
 
         {/* Outro — full screen background video */}
-        {showVideo && (
-          <video
-            className="fixed inset-0 w-full h-full object-cover"
-            style={{ zIndex: 100, backgroundColor: "#000" }}
-            src="/videos/11999581-hd_1920_1080_24fps.mp4"
-            autoPlay
-            muted
-            playsInline
-          />
-        )}
+        {/* Outro — rendered into <body> on top of everything, including the GoFundMe checkout overlay */}
+        {showVideo &&
+          createPortal(
+            <video
+              className="fixed inset-0 w-full h-full object-cover"
+              style={{ zIndex: 2147483647, backgroundColor: "#000" }}
+              src="/videos/11999581-hd_1920_1080_24fps.mp4"
+              autoPlay
+              muted
+              playsInline
+            />,
+            document.body
+          )}
       </div>
     </div>
   );
