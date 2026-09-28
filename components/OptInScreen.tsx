@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export interface OptInSignup {
   firstName: string;
@@ -29,6 +29,7 @@ type VirtuousWindow = Window & {
 export default function OptInScreen({ onContinue, onSignup }: OptInScreenProps) {
   const formRef = useRef<HTMLDivElement>(null);
   const onSignupRef = useRef(onSignup);
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     onSignupRef.current = onSignup;
@@ -43,8 +44,10 @@ export default function OptInScreen({ onContinue, onSignup }: OptInScreenProps) 
     w.VirtuousForms = w.VirtuousForms || {};
     w.VirtuousForms.settings = {
       ...w.VirtuousForms.settings,
-      onSuccess: (data) =>
-        onSignupRef.current?.({ firstName: data.firstName, lastName: data.lastName, email: data.email }),
+      onSuccess: (data) => {
+        setSubmitted(true);
+        onSignupRef.current?.({ firstName: data.firstName, lastName: data.lastName, email: data.email });
+      },
     };
 
     if (w.VirtuousForms?.IsLoaded && w.virtuousForm) {
@@ -138,24 +141,28 @@ export default function OptInScreen({ onContinue, onSignup }: OptInScreenProps) 
         {/* Virtuous email opt-in form */}
         <div ref={formRef} className="w-full text-left" />
 
-        {/* Continue — advances the quiz (the Virtuous form submits on its own) */}
-        <button
-          onClick={onContinue}
-          className="w-full font-black tracking-widest transition-opacity hover:opacity-90 active:scale-95"
-          style={{
-            backgroundColor: "#2954ff",
-            color: "#ffffff",
-            fontFamily: "'Garet', sans-serif",
-            fontSize: "clamp(0.9rem, 1.6vw, 1.1rem)",
-            border: "none",
-            cursor: "pointer",
-            letterSpacing: "0.2em",
-            borderRadius: "5px",
-            padding: "10px 16px",
-          }}
-        >
-          CONTINUE
-        </button>
+        {/* Continue — fades in once the Virtuous form has been submitted */}
+        {submitted && (
+          <div className="animate-fade-in w-full">
+            <button
+              onClick={onContinue}
+              className="w-full font-black tracking-widest transition-opacity hover:opacity-90 active:scale-95"
+              style={{
+                backgroundColor: "#2954ff",
+                color: "#ffffff",
+                fontFamily: "'Garet', sans-serif",
+                fontSize: "clamp(0.9rem, 1.6vw, 1.1rem)",
+                border: "none",
+                cursor: "pointer",
+                letterSpacing: "0.2em",
+                borderRadius: "5px",
+                padding: "10px 16px",
+              }}
+            >
+              CONTINUE
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
