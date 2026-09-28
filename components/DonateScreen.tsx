@@ -6,8 +6,23 @@ interface DonateScreenProps {
   onComplete: () => void;
 }
 
+type GoFundMeWindow = Window & {
+  eg?: { init: (config: { win: Window }) => Promise<unknown>; destroy: () => void };
+};
+
 export default function DonateScreen({ onComplete }: DonateScreenProps) {
   const [showVideo, setShowVideo] = useState(false);
+
+  useEffect(() => {
+    // GoFundMe SDK (loaded in layout <head>) only scans for [classy] embeds when it initializes,
+    // so re-init once this screen's embed is in the DOM. If the SDK hasn't loaded yet, its own auto-init will find it.
+    const w = window as GoFundMeWindow;
+    if (w.eg) {
+      w.eg.destroy();
+      w.eg.init({ win: window });
+    }
+    return () => w.eg?.destroy();
+  }, []);
 
   useEffect(() => {
     // Listen for Classy donation completion via postMessage
