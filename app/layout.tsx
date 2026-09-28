@@ -13,9 +13,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="h-full">
-      <head>
-        <script async src="https://giving.gofundme.com/embedded/api/checkout/sdk/js/75035"></script>
-      </head>
       <body className="h-full antialiased">{children}</body>
     </html>
   );

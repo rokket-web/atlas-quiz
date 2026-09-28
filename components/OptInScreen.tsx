@@ -139,7 +139,7 @@ export default function OptInScreen({ onContinue, onSignup }: OptInScreenProps) 
         </p>
 
         {/* Virtuous email opt-in form */}
-        <div ref={formRef} className="w-full text-left" />
+        <div ref={formRef} className="optin-form w-full text-left" />
 
         {/* Continue — fades in once the Virtuous form has been submitted */}
         {submitted && (

@@ -14,8 +14,8 @@ export default function DonateScreen({ onComplete }: DonateScreenProps) {
   const [showVideo, setShowVideo] = useState(false);
 
   useEffect(() => {
-    // GoFundMe SDK (loaded in layout <head>) only scans for [classy] embeds when it initializes,
-    // so re-init once this screen's embed is in the DOM. If the SDK hasn't loaded yet, its own auto-init will find it.
+    // GoFundMe SDK only scans for [classy] embeds when it initializes. On first visit the script below loads after
+    // the embed is in the DOM and auto-inits; on later visits (script already loaded) re-init to pick up the new embed.
     const w = window as GoFundMeWindow;
     if (w.eg) {
       w.eg.destroy();
@@ -97,7 +97,8 @@ export default function DonateScreen({ onComplete }: DonateScreenProps) {
 
         {/* Right column: donate widget */}
         <div className="w-full md:flex-1">
-          {/* Classy embedded donation form */}
+          {/* GoFundMe Pro (Classy) embedded donation form — React loads this script once and reuses it */}
+          <script async src="https://giving.gofundme.com/embedded/api/checkout/sdk/js/75035" />
           <div
             id="j2gPfgO2esO5_Wt6uXuGA"
             // @ts-expect-error classy is a non-standard attribute read by the Classy embed script
