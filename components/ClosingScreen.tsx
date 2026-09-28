@@ -55,10 +55,10 @@ export default function ClosingScreen({ onContinue }: ClosingScreenProps) {
 
   return (
     <div className="relative flex items-center justify-center h-full w-full overflow-hidden">
-      {/* Video background — swap src when asset is ready */}
+      {/* Video background */}
       <video
         className="absolute inset-0 w-full h-full object-cover"
-        src=""
+        src="/videos/11999581-hd_1920_1080_24fps.mp4"
         autoPlay
         loop
         muted
