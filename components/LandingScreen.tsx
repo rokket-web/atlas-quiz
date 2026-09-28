@@ -11,8 +11,8 @@ export default function LandingScreen({ onStart }: LandingScreenProps) {
       style={{ backgroundColor: "#231F20" }}
     >
       <p
-        className="text-lg font-bold mb-4 tracking-wide"
-        style={{ color: "#ffcd2b", fontFamily: "'Garet', sans-serif" }}
+        className="font-bold mb-4 tracking-wide"
+        style={{ color: "#ffcd2b", fontSize: "2rem", fontFamily: "'Garet', sans-serif" }}
       >
         get to know
       </p>

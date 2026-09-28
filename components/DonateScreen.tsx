@@ -8,8 +8,7 @@ interface DonateScreenProps {
 
 export default function DonateScreen({ onComplete }: DonateScreenProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const [flashing, setFlashing] = useState(false);
-  const [flashColor, setFlashColor] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -32,25 +31,18 @@ export default function DonateScreen({ onComplete }: DonateScreenProps) {
           e.data.event === "donation:success" ||
           e.data.event === "checkout:success")
       ) {
-        triggerFlash();
+        playOutro();
       }
     }
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
   }, []);
 
-  function triggerFlash() {
-    setFlashing(true);
-    // Flash every 300ms for 2 seconds, then 100ms dark pause, then restart
-    let count = 0;
-    const interval = setInterval(() => {
-      setFlashColor((f) => !f);
-      count++;
-    }, 300);
-
+  function playOutro() {
+    setShowVideo(true);
+    // Play background video for 2 seconds, then 100ms pause, then restart
     setTimeout(() => {
-      clearInterval(interval);
-      setFlashing(false);
+      setShowVideo(false);
       setTimeout(onComplete, 100);
     }, 2000);
   }
@@ -121,7 +113,7 @@ export default function DonateScreen({ onComplete }: DonateScreenProps) {
 
       {/* Yellow button — outside the card */}
       <button
-        onClick={triggerFlash}
+        onClick={playOutro}
         className="relative font-black transition-opacity hover:opacity-90 active:scale-95"
         style={{
           backgroundColor: "#ffcd2b",
@@ -138,15 +130,15 @@ export default function DonateScreen({ onComplete }: DonateScreenProps) {
         I'M NOT READY
       </button>
 
-      {/* Flash overlay — full screen, video placeholder */}
-      {flashing && (
-        <div
-          className="fixed inset-0"
-          style={{
-            backgroundColor: flashColor ? "#cc0000" : "#ffffff",
-            zIndex: 100,
-            transition: "background-color 0.05s",
-          }}
+      {/* Outro — full screen background video */}
+      {showVideo && (
+        <video
+          className="fixed inset-0 w-full h-full object-cover"
+          style={{ zIndex: 100, backgroundColor: "#000" }}
+          src="/videos/11999581-hd_1920_1080_24fps.mp4"
+          autoPlay
+          muted
+          playsInline
         />
       )}
     </div>

@@ -1,10 +1,64 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+
 interface OptInScreenProps {
   onContinue: () => void;
 }
 
+const VIRTUOUS_FORM_ID = "B80E96F5-7402-4298-AD46-BFE869583C8F";
+const VIRTUOUS_ORG_ID = "2642";
+
+type VirtuousWindow = Window & {
+  VirtuousForms?: {
+    IsLoaded?: boolean;
+    VirtuousFormsApiUrl?: string;
+    LaunchDarklyClient?: { identify: (context: object) => Promise<unknown> } | null;
+  };
+  virtuousForm?: (options: object) => void;
+};
+
 export default function OptInScreen({ onContinue }: OptInScreenProps) {
+  const formRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = formRef.current;
+    if (!container) return;
+    const w = window as VirtuousWindow;
+
+    if (w.VirtuousForms?.IsLoaded && w.virtuousForm) {
+      // Embed script only bootstraps once per page load — on later visits render the form directly
+      const target = document.createElement("div");
+      target.setAttribute("data-virtuous-form", VIRTUOUS_FORM_ID);
+      container.appendChild(target);
+      const render = () =>
+        w.virtuousForm?.({
+          organizationId: VIRTUOUS_ORG_ID,
+          formId: VIRTUOUS_FORM_ID,
+          environment: 0,
+          isGiving: false,
+          merchantType: "wepay",
+          virtuousFormsApiUrl: w.VirtuousForms?.VirtuousFormsApiUrl,
+        });
+      const ld = w.VirtuousForms.LaunchDarklyClient;
+      if (ld) ld.identify({ kind: "organization", key: VIRTUOUS_ORG_ID }).then(render);
+      else render();
+    } else {
+      // Embed script renders the form next to its own <script data-vform> tag
+      const script = document.createElement("script");
+      script.src = "https://cdn.virtuoussoftware.com/virtuous.embed.min.js";
+      script.setAttribute("data-vform", VIRTUOUS_FORM_ID);
+      script.setAttribute("data-orgId", VIRTUOUS_ORG_ID);
+      script.setAttribute("data-isGiving", "false");
+      script.setAttribute("data-dependencies", "[]");
+      container.appendChild(script);
+    }
+
+    return () => {
+      container.innerHTML = "";
+    };
+  }, []);
+
   return (
     <div
       className="animate-fade-in flex items-center justify-center h-full w-full"
@@ -59,39 +113,10 @@ export default function OptInScreen({ onContinue }: OptInScreenProps) {
           It's time for the industry of exploitation to come to an end. Sign your name here to join the cause, and we'll send you your next step on this mission.
         </p>
 
-        {/* Inputs — side by side on sm+, stacked on mobile */}
-        <div className="flex flex-col sm:flex-row gap-3 w-full">
-          <input
-            type="text"
-            placeholder="name"
-            className="flex-1 font-black text-center outline-none min-w-0"
-            style={{
-              backgroundColor: "#e6e6e6",
-              fontFamily: "'Garet', sans-serif",
-              fontSize: "1.1rem",
-              color: "#231F20",
-              border: "none",
-              borderRadius: "5px",
-              padding: "10px 16px",
-            }}
-          />
-          <input
-            type="email"
-            placeholder="email"
-            className="flex-1 font-black text-center outline-none min-w-0"
-            style={{
-              backgroundColor: "#e6e6e6",
-              fontFamily: "'Garet', sans-serif",
-              fontSize: "1.1rem",
-              color: "#231F20",
-              border: "none",
-              borderRadius: "5px",
-              padding: "10px 16px",
-            }}
-          />
-        </div>
+        {/* Virtuous email opt-in form */}
+        <div ref={formRef} className="w-full text-left" />
 
-        {/* Button — always full width below inputs */}
+        {/* Continue — advances the quiz (the Virtuous form submits on its own) */}
         <button
           onClick={onContinue}
           className="w-full font-black tracking-widest transition-opacity hover:opacity-90 active:scale-95"
@@ -107,7 +132,7 @@ export default function OptInScreen({ onContinue }: OptInScreenProps) {
             padding: "10px 16px",
           }}
         >
-          JOIN THE CAUSE
+          CONTINUE
         </button>
       </div>
     </div>
