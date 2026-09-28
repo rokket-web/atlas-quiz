@@ -85,83 +85,89 @@ export default function OptInScreen({ onContinue, onSignup }: OptInScreenProps) 
   }, []);
 
   return (
-    <div
-      className="animate-fade-in flex flex-col items-center justify-center-safe h-full w-full overflow-y-auto py-6 md:py-10"
-      style={{
-        backgroundImage: "url('/card-bg.png')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
+    <div className="animate-fade-in relative h-full w-full overflow-hidden">
+      {/* Video background — stays put while the content layer scrolls */}
+      <video
+        className="absolute inset-0 w-full h-full object-cover"
+        src="/videos/11999581-hd_1920_1080_24fps.mp4"
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
+
       {/* Overlay */}
       <div className="absolute inset-0" style={{ backgroundColor: "rgba(0,0,0,0.48)" }} />
 
-      {/* Card */}
-      <div
-        className="relative flex flex-col items-center text-center rounded-2xl w-[90vw] max-w-[560px]"
-        style={{
-          backgroundColor: "#ffffff",
-          padding: "40px",
-          gap: "1.2rem",
-        }}
-      >
-        {/* Logo */}
-        <img
-          src="/atlas-logo.png"
-          alt="Atlas Free"
-          style={{ width: 72, height: 72, objectFit: "contain" }}
-        />
+      <div className="relative flex flex-col items-center justify-center-safe h-full w-full overflow-y-auto py-6 md:py-10">
 
-        {/* Headline */}
-        <p
-          className="font-black"
+        {/* Card */}
+        <div
+          className="relative flex flex-col items-center text-center rounded-2xl w-[90vw] max-w-[560px]"
           style={{
-            fontFamily: "'Garet', sans-serif",
-            fontSize: "clamp(1.25rem, 3vw, 1.75rem)",
-            color: "#231F20",
-            lineHeight: 1.1,
+            backgroundColor: "#ffffff",
+            padding: "40px",
+            gap: "1.2rem",
           }}
         >
-          If you're reading this, we need you to join us to bring down the business of human trafficking.
-        </p>
+          {/* Logo */}
+          <img
+            src="/atlas-logo.png"
+            alt="Atlas Free"
+            style={{ width: 72, height: 72, objectFit: "contain" }}
+          />
 
-        {/* Subtext */}
-        <p
-          style={{
-            fontFamily: "'Garet', sans-serif",
-            fontSize: "clamp(0.9rem, 1.8vw, 1.1rem)",
-            color: "#231F20",
-            lineHeight: 1.5,
-          }}
-        >
-          It's time for the industry of exploitation to come to an end. Sign your name here to join the cause, and we'll send you your next step on this mission.
-        </p>
+          {/* Headline */}
+          <p
+            className="font-black"
+            style={{
+              fontFamily: "'Garet', sans-serif",
+              fontSize: "clamp(1.25rem, 3vw, 1.75rem)",
+              color: "#231F20",
+              lineHeight: 1.1,
+            }}
+          >
+            If you're reading this, we need you to join us to bring down the business of human trafficking.
+          </p>
 
-        {/* Virtuous email opt-in form */}
-        <div ref={formRef} className="optin-form w-full text-left" />
+          {/* Subtext */}
+          <p
+            style={{
+              fontFamily: "'Garet', sans-serif",
+              fontSize: "clamp(0.9rem, 1.8vw, 1.1rem)",
+              color: "#231F20",
+              lineHeight: 1.5,
+            }}
+          >
+            It's time for the industry of exploitation to come to an end. Sign your name here to join the cause, and we'll send you your next step on this mission.
+          </p>
 
-        {/* Continue — fades in once the Virtuous form has been submitted */}
-        {submitted && (
-          <div className="animate-fade-in w-full">
-            <button
-              onClick={onContinue}
-              className="w-full font-black tracking-widest transition-opacity hover:opacity-90 active:scale-95"
-              style={{
-                backgroundColor: "#2954ff",
-                color: "#ffffff",
-                fontFamily: "'Garet', sans-serif",
-                fontSize: "clamp(0.9rem, 1.6vw, 1.1rem)",
-                border: "none",
-                cursor: "pointer",
-                letterSpacing: "0.2em",
-                borderRadius: "5px",
-                padding: "10px 16px",
-              }}
-            >
-              CONTINUE
-            </button>
-          </div>
-        )}
+          {/* Virtuous email opt-in form */}
+          <div ref={formRef} className="optin-form w-full text-left" />
+
+          {/* Continue — fades in once the Virtuous form has been submitted */}
+          {submitted && (
+            <div className="animate-fade-in w-full">
+              <button
+                onClick={onContinue}
+                className="w-full font-black tracking-widest transition-opacity hover:opacity-90 active:scale-95"
+                style={{
+                  backgroundColor: "#2954ff",
+                  color: "#ffffff",
+                  fontFamily: "'Garet', sans-serif",
+                  fontSize: "clamp(0.9rem, 1.6vw, 1.1rem)",
+                  border: "none",
+                  cursor: "pointer",
+                  letterSpacing: "0.2em",
+                  borderRadius: "5px",
+                  padding: "10px 16px",
+                }}
+              >
+                CONTINUE
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
