@@ -97,29 +97,30 @@ export default function ClosingScreen({ onContinue }: ClosingScreenProps) {
         </div>
       ))}
 
-      {/* Flashing box */}
+      {/* Flashing box — narrow, near-square on mobile; wide on iPad and up */}
       <div
-        className="relative flex items-center justify-center rounded-2xl px-8 text-center"
+        className="relative flex items-center justify-center rounded-2xl px-5 py-8 md:px-8 md:py-0 text-center w-[72%] md:w-[75%] md:h-[50%]"
         style={{
-          width: "75%",
-          height: "50%",
           backgroundColor: flash ? "#cc0000" : "#ffffff",
           transition: "background-color 0.05s",
           zIndex: 30,
         }}
       >
         <p
-          className="font-black leading-tight select-none"
+          className="font-black leading-tight select-none text-[9vw] md:text-[clamp(1.5rem,4vw,3rem)]"
           style={{
             fontFamily: "'Garet', sans-serif",
-            fontSize: "clamp(1.5rem, 4vw, 3rem)",
             color: flash ? "#ffffff" : "#cc0000",
             transition: "color 0.05s",
           }}
         >
-          HUMAN TRAFFICKING HAS
-          <br />
-          DETECTED A THREAT
+          {/* Mobile: 5 lines; iPad and up: 2 lines */}
+          HUMAN <br className="md:hidden" />
+          TRAFFICKING <br className="md:hidden" />
+          HAS <br className="hidden md:inline" />
+          <br className="md:hidden" />
+          DETECTED A <br className="md:hidden" />
+          THREAT
         </p>
       </div>
     </div>

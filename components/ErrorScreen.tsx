@@ -49,22 +49,19 @@ export default function ErrorScreen({ onContinue }: ErrorScreenProps) {
       {/* Dark overlay so box stays readable before video is added */}
       <div className="absolute inset-0" style={{ backgroundColor: "rgba(0,0,0,0.5)" }} />
 
-      {/* Flashing box */}
+      {/* Flashing box — wide rectangle on mobile, larger box on iPad and up */}
       {showBox && (
         <div
-          className="relative flex items-center justify-center rounded-2xl"
+          className="relative flex items-center justify-center rounded-2xl w-[90%] aspect-[12/5] md:w-[60%] md:h-[40%] md:aspect-auto"
           style={{
-            width: "60%",
-            height: "40%",
             backgroundColor: flash ? "#cc0000" : "#ffffff",
             transition: "background-color 0.05s",
           }}
         >
           <p
-            className="font-black tracking-widest select-none text-center"
+            className="font-black md:tracking-widest select-none text-center text-[16vw] md:text-[clamp(3.2rem,9.6vw,7.2rem)]"
             style={{
               fontFamily: "'Garet', sans-serif",
-              fontSize: "clamp(3.2rem, 9.6vw, 7.2rem)",
               color: flash ? "#ffffff" : "#cc0000",
               transition: "color 0.05s",
             }}

@@ -52,7 +52,7 @@ export default function DonateScreen({ onComplete }: DonateScreenProps) {
 
   return (
     <div
-      className="animate-fade-in flex flex-col items-center justify-center-safe gap-5 h-full w-full overflow-y-auto py-8"
+      className="animate-fade-in flex flex-col items-center justify-center-safe gap-5 h-full w-full overflow-y-auto p-6 md:p-10"
       style={{
         backgroundImage: "url('/card-bg.png')",
         backgroundSize: "cover",
