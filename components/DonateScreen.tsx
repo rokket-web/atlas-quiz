@@ -99,7 +99,7 @@ export default function DonateScreen({ onComplete }: DonateScreenProps) {
             id="classy-iframe"
             // @ts-expect-error allowpaymentrequest is a non-standard attribute
             allowpaymentrequest="true"
-            src="https://give.atlasfree.org/give/413670/#!/donation/checkout?eg=true&egfa=true"
+            src="https://give.atlasfree.org/give/849410/#!/donation/checkout?eg=true&egfa=true"
             style={{
               width: "100%",
               height: 520,
