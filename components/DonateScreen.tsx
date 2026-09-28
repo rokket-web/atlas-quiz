@@ -52,7 +52,7 @@ export default function DonateScreen({ onComplete }: DonateScreenProps) {
 
   return (
     <div
-      className="animate-fade-in flex flex-col items-center justify-center-safe gap-5 h-full w-full overflow-y-auto p-6 md:p-10"
+      className="animate-fade-in flex flex-col items-center justify-center-safe gap-5 h-full w-full overflow-y-auto py-6 md:py-10"
       style={{
         backgroundImage: "url('/card-bg.png')",
         backgroundSize: "cover",
@@ -64,7 +64,7 @@ export default function DonateScreen({ onComplete }: DonateScreenProps) {
 
       {/* White card — stacked on mobile, two columns (logo + copy | widget) on iPad and up */}
       <div
-        className="relative flex flex-col md:flex-row items-center text-center md:text-left rounded-2xl w-full max-w-[560px] md:max-w-[960px]"
+        className="relative flex flex-col md:flex-row items-center text-center md:text-left rounded-2xl w-[90vw] max-w-[560px] md:max-w-[960px]"
         style={{
           backgroundColor: "#ffffff",
           padding: "40px",

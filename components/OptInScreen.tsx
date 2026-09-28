@@ -86,7 +86,7 @@ export default function OptInScreen({ onContinue, onSignup }: OptInScreenProps) 
 
   return (
     <div
-      className="animate-fade-in flex flex-col items-center justify-center-safe h-full w-full overflow-y-auto p-6 md:p-10"
+      className="animate-fade-in flex flex-col items-center justify-center-safe h-full w-full overflow-y-auto py-6 md:py-10"
       style={{
         backgroundImage: "url('/card-bg.png')",
         backgroundSize: "cover",
@@ -98,10 +98,9 @@ export default function OptInScreen({ onContinue, onSignup }: OptInScreenProps) 
 
       {/* Card */}
       <div
-        className="relative flex flex-col items-center text-center rounded-2xl w-full"
+        className="relative flex flex-col items-center text-center rounded-2xl w-[90vw] max-w-[560px]"
         style={{
           backgroundColor: "#ffffff",
-          maxWidth: 560,
           padding: "40px",
           gap: "1.2rem",
         }}

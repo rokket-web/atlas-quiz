@@ -80,10 +80,11 @@ body {
   animation: flicker 0.12s infinite;
 }
 
-/* Virtuous email opt-in form (OptInScreen) — !important to beat Virtuous's high-specificity form[id*="vcrm"] rules */
-.optin-form input:not([type="checkbox"]):not([type="radio"]),
-.optin-form select,
-.optin-form textarea {
+/* Virtuous email opt-in form (OptInScreen) — scoped to Virtuous's own form[id*="vcrm"] and !important
+   to beat its high-specificity rules (its stylesheet is injected at runtime) */
+form[id*="vcrm"] .v_ig input:not([type="checkbox"]):not([type="radio"]),
+form[id*="vcrm"] .v_ig select,
+form[id*="vcrm"] .v_ig textarea {
   background: #e6e6e6 !important;
   color: #000 !important;
   outline: none !important;
@@ -92,16 +93,35 @@ body {
   border-radius: 5px !important;
 }
 
-.optin-form .v_error input,
-.optin-form .v_error select,
-.optin-form .v_error textarea {
+form[id*="vcrm"] .v_ig.v_error input,
+form[id*="vcrm"] .v_ig.v_error select,
+form[id*="vcrm"] .v_ig.v_error textarea {
   box-shadow: inset 0 0 0 1px #FE6569 !important;
 }
 
-.optin-form button:not(.v_btn_outline),
-.optin-form input[type="submit"] {
-  background-color: #2954ff !important;
+form[id*="vcrm"] .v_ig button:not(.v_btn_outline),
+form[id*="vcrm"] .v_ig button:not(.v_btn_outline):hover,
+form[id*="vcrm"] .v_ig button:not(.v_btn_outline):focus,
+form[id*="vcrm"] .v_ig button:not(.v_btn_outline):active,
+form[id*="vcrm"] .v_ig input[type="submit"],
+form[id*="vcrm"] .v_ig input[type="submit"]:hover,
+form[id*="vcrm"] .v_ig input[type="submit"]:focus,
+form[id*="vcrm"] .v_ig input[type="submit"]:active {
+  background-color: #2954FF !important;
   border-radius: 5px !important;
   outline: none !important;
   text-transform: uppercase !important;
+}
+
+@media (max-width: 767px) {
+  form[id*="vcrm"] .v_fw .v_fr .v_fc__1,
+  form[id*="vcrm"] .v_fw .v_fr .v_fc__2,
+  form[id*="vcrm"] .v_fw .v_fr .v_fc__3,
+  form[id*="vcrm"] .v_fw .v_fr .v_fc__4 {
+    margin: 0 !important;
+  }
+
+  form[id*="vcrm"] .v_ig input[type="email"] {
+    margin-bottom: 10px !important;
+  }
 }
