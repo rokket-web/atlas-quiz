@@ -57,7 +57,7 @@ export default function DonateScreen({ onComplete }: DonateScreenProps) {
 
   return (
     <div
-      className="animate-fade-in flex flex-col items-center justify-start gap-5 h-full w-full overflow-y-auto py-8"
+      className="animate-fade-in flex flex-col items-center justify-center-safe gap-5 h-full w-full overflow-y-auto py-8"
       style={{
         backgroundImage: "url('/card-bg.png')",
         backgroundSize: "cover",
@@ -67,52 +67,56 @@ export default function DonateScreen({ onComplete }: DonateScreenProps) {
       {/* Overlay */}
       <div className="absolute inset-0" style={{ backgroundColor: "rgba(0,0,0,0.48)" }} />
 
-      {/* White card */}
+      {/* White card — stacked on mobile, two columns (logo + copy | widget) on iPad and up */}
       <div
-        className="relative flex flex-col items-center text-center rounded-2xl w-full mx-6"
+        className="relative flex flex-col md:flex-row items-center text-center md:text-left rounded-2xl w-full max-w-[560px] md:max-w-[960px]"
         style={{
           backgroundColor: "#ffffff",
-          maxWidth: 560,
           padding: "40px",
-          gap: "1.2rem",
+          gap: "1.2rem 2.5rem",
         }}
       >
-        {/* Logo */}
-        <img
-          src="/atlas-logo.png"
-          alt="Atlas Free"
-          style={{ width: 72, height: 72, objectFit: "contain" }}
-        />
+        {/* Left column: logo + copy */}
+        <div className="flex flex-col items-center md:items-start md:flex-1 md:pr-[30px]" style={{ gap: "1.2rem" }}>
+          {/* Logo */}
+          <img
+            src="/atlas-logo.png"
+            alt="Atlas Free"
+            style={{ width: 72, height: 72, objectFit: "contain" }}
+          />
 
-        {/* Copy */}
-        <p
-          style={{
-            fontFamily: "'Garet', sans-serif",
-            fontSize: "clamp(0.95rem, 2vw, 1.2rem)",
-            color: "#231F20",
-            lineHeight: 1.55,
-          }}
-        >
-          <span style={{ color: "#2954ff", fontWeight: 800 }}>Before we lose you…</span>
-          <br />
-          <span style={{ fontWeight: 800 }}>Will you give $27.60 for the 27.6 million people trapped in trafficking to fund their rescue and help dismantle the business of exploitation?</span>
-        </p>
+          {/* Copy */}
+          <p
+            style={{
+              fontFamily: "'Garet', sans-serif",
+              fontSize: "clamp(0.95rem, 2vw, 1.2rem)",
+              color: "#231F20",
+              lineHeight: 1.55,
+            }}
+          >
+            <span style={{ color: "#2954ff", fontWeight: 800 }}>Before we lose you…</span>
+            <br />
+            <span style={{ fontWeight: 800 }}>Will you give $27.60 for the 27.6 million people trapped in trafficking to fund their rescue and help dismantle the business of exploitation?</span>
+          </p>
+        </div>
 
-        {/* Donate widget */}
-        <iframe
-          ref={iframeRef}
-          id="classy-iframe"
-          // @ts-expect-error allowpaymentrequest is a non-standard attribute
-          allowpaymentrequest="true"
-          src="https://give.atlasfree.org/give/413670/#!/donation/checkout?eg=true&egfa=true"
-          style={{
-            width: "100%",
-            height: 520,
-            backgroundColor: "#fff",
-            border: "none",
-            borderRadius: "5px",
-          }}
-        />
+        {/* Right column: donate widget */}
+        <div className="w-full md:flex-1">
+          <iframe
+            ref={iframeRef}
+            id="classy-iframe"
+            // @ts-expect-error allowpaymentrequest is a non-standard attribute
+            allowpaymentrequest="true"
+            src="https://give.atlasfree.org/give/413670/#!/donation/checkout?eg=true&egfa=true"
+            style={{
+              width: "100%",
+              height: 520,
+              backgroundColor: "#fff",
+              border: "none",
+              borderRadius: "5px",
+            }}
+          />
+        </div>
       </div>
 
       {/* Yellow button — outside the card */}

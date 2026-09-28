@@ -13,7 +13,6 @@ export default function FeedbackScreen({
   question,
   isCorrect,
   onNext,
-  isLast,
 }: FeedbackScreenProps) {
   const feedback = isCorrect
     ? question.correctFeedback
@@ -94,7 +93,7 @@ export default function FeedbackScreen({
           alignSelf: "flex-start",
         }}
       >
-        {isLast ? "see what you can do →" : "next question →"}
+        next question →
       </button>
     </div>
   );
