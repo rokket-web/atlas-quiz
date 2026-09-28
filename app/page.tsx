@@ -7,7 +7,7 @@ import QuestionScreen from "@/components/QuestionScreen";
 import FeedbackScreen from "@/components/FeedbackScreen";
 import ErrorScreen from "@/components/ErrorScreen";
 import ClosingScreen from "@/components/ClosingScreen";
-import OptInScreen from "@/components/OptInScreen";
+import OptInScreen, { type OptInSignup } from "@/components/OptInScreen";
 import DonateScreen from "@/components/DonateScreen";
 
 type Phase =
@@ -48,6 +48,11 @@ export default function Home() {
 
   function handleContinue() {
     setPhase({ name: "optin" });
+  }
+
+  function handleOptInSignup(signup: OptInSignup) {
+    // Runs once the Virtuous opt-in form submits successfully
+    console.log("Opt-in submitted", signup.email);
   }
 
   function handleOptInContinue() {
@@ -101,7 +106,7 @@ export default function Home() {
         )}
 
         {phase.name === "optin" && (
-          <OptInScreen onContinue={handleOptInContinue} />
+          <OptInScreen onContinue={handleOptInContinue} onSignup={handleOptInSignup} />
         )}
 
         {phase.name === "donate" && <DonateScreen onComplete={handleDonateComplete} />}

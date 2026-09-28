@@ -2,8 +2,15 @@
 
 import { useEffect, useRef } from "react";
 
+export interface OptInSignup {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
 interface OptInScreenProps {
   onContinue: () => void;
+  onSignup?: (signup: OptInSignup) => void;
 }
 
 const VIRTUOUS_FORM_ID = "B80E96F5-7402-4298-AD46-BFE869583C8F";
@@ -13,18 +20,32 @@ type VirtuousWindow = Window & {
   VirtuousForms?: {
     IsLoaded?: boolean;
     VirtuousFormsApiUrl?: string;
+    settings?: { onSuccess?: (data: OptInSignup) => void };
     LaunchDarklyClient?: { identify: (context: object) => Promise<unknown> } | null;
   };
   virtuousForm?: (options: object) => void;
 };
 
-export default function OptInScreen({ onContinue }: OptInScreenProps) {
+export default function OptInScreen({ onContinue, onSignup }: OptInScreenProps) {
   const formRef = useRef<HTMLDivElement>(null);
+  const onSignupRef = useRef(onSignup);
+
+  useEffect(() => {
+    onSignupRef.current = onSignup;
+  }, [onSignup]);
 
   useEffect(() => {
     const container = formRef.current;
     if (!container) return;
     const w = window as VirtuousWindow;
+
+    // Virtuous calls settings.onSuccess after a successful submit (the embed script keeps an existing VirtuousForms object)
+    w.VirtuousForms = w.VirtuousForms || {};
+    w.VirtuousForms.settings = {
+      ...w.VirtuousForms.settings,
+      onSuccess: (data) =>
+        onSignupRef.current?.({ firstName: data.firstName, lastName: data.lastName, email: data.email }),
+    };
 
     if (w.VirtuousForms?.IsLoaded && w.virtuousForm) {
       // Embed script only bootstraps once per page load — on later visits render the form directly
@@ -56,6 +77,7 @@ export default function OptInScreen({ onContinue }: OptInScreenProps) {
 
     return () => {
       container.innerHTML = "";
+      if (w.VirtuousForms?.settings) delete w.VirtuousForms.settings.onSuccess;
     };
   }, []);
 
