@@ -1,27 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface DonateScreenProps {
   onComplete: () => void;
 }
 
 export default function DonateScreen({ onComplete }: DonateScreenProps) {
-  const iframeRef = useRef<HTMLIFrameElement>(null);
   const [showVideo, setShowVideo] = useState(false);
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
-    const validUrlParams = ["c_src", "c_src2", "amount", "recurring", "designation"];
-    const appendUrlParams = validUrlParams.reduce((acc, key) => {
-      const value = searchParams.get(key);
-      return value === null ? acc : `${acc}&${key}=${value}`;
-    }, "");
-
-    if (iframeRef.current && appendUrlParams) {
-      iframeRef.current.src += appendUrlParams;
-    }
-
     // Listen for Classy donation completion via postMessage
     function handleMessage(e: MessageEvent) {
       if (
@@ -94,19 +82,11 @@ export default function DonateScreen({ onComplete }: DonateScreenProps) {
 
         {/* Right column: donate widget */}
         <div className="w-full md:flex-1">
-          <iframe
-            ref={iframeRef}
-            id="classy-iframe"
-            // @ts-expect-error allowpaymentrequest is a non-standard attribute
-            allowpaymentrequest="true"
-            src="https://give.atlasfree.org/give/849410/#!/donation/checkout?eg=true&egfa=true"
-            style={{
-              width: "100%",
-              height: 520,
-              backgroundColor: "#fff",
-              border: "none",
-              borderRadius: "5px",
-            }}
+          {/* Classy embedded donation form */}
+          <div
+            id="j2gPfgO2esO5_Wt6uXuGA"
+            // @ts-expect-error classy is a non-standard attribute read by the Classy embed script
+            classy="849410"
           />
         </div>
       </div>
