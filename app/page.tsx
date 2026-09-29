@@ -9,6 +9,7 @@ import ErrorScreen from "@/components/ErrorScreen";
 import ClosingScreen from "@/components/ClosingScreen";
 import OptInScreen, { type OptInSignup } from "@/components/OptInScreen";
 import DonateScreen from "@/components/DonateScreen";
+import FightScreen from "@/components/FightScreen";
 
 type Phase =
   | { name: "landing" }
@@ -17,7 +18,8 @@ type Phase =
   | { name: "error" }
   | { name: "closing" }
   | { name: "optin" }
-  | { name: "donate" };
+  | { name: "donate" }
+  | { name: "fight" };
 
 export default function Home() {
   const [phase, setPhase] = useState<Phase>({ name: "landing" });
@@ -57,6 +59,10 @@ export default function Home() {
 
   function handleOptInContinue() {
     setPhase({ name: "donate" });
+  }
+
+  function handleNotReady() {
+    setPhase({ name: "fight" });
   }
 
   function handleDonateComplete() {
@@ -109,7 +115,11 @@ export default function Home() {
           <OptInScreen onContinue={handleOptInContinue} onSignup={handleOptInSignup} />
         )}
 
-        {phase.name === "donate" && <DonateScreen onComplete={handleDonateComplete} />}
+        {phase.name === "donate" && (
+          <DonateScreen onComplete={handleDonateComplete} onNotReady={handleNotReady} />
+        )}
+
+        {phase.name === "fight" && <FightScreen onDone={handleDonateComplete} />}
       </div>
     </div>
   );

@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 
 interface DonateScreenProps {
   onComplete: () => void;
+  onNotReady: () => void;
 }
 
 // Origins allowed to post GoFundMe Pro (Classy) checkout messages
@@ -14,9 +15,20 @@ type GoFundMeWindow = Window & {
   eg?: { init: (config: { win: Window }) => Promise<unknown>; destroy: () => void };
 };
 
-export default function DonateScreen({ onComplete }: DonateScreenProps) {
+export default function DonateScreen({ onComplete, onNotReady }: DonateScreenProps) {
   const [showVideo, setShowVideo] = useState(false);
   const outroStarted = useRef(false);
+
+  function playOutro() {
+    if (outroStarted.current) return;
+    outroStarted.current = true;
+    setShowVideo(true);
+    // Play background video for 2 seconds, then 100ms pause, then restart
+    setTimeout(() => {
+      setShowVideo(false);
+      setTimeout(onComplete, 100);
+    }, 2000);
+  }
 
   useEffect(() => {
     // GoFundMe SDK only scans for [classy] embeds when it initializes. On first visit the script below loads after
@@ -40,7 +52,7 @@ export default function DonateScreen({ onComplete }: DonateScreenProps) {
     function handleMessage(e: MessageEvent) {
       if (!GOFUNDME_ORIGINS.includes(e.origin)) return;
       if (e.data?.type === "DONATION_COMPLETED_MSG_FROM_APP" && !outroTimer) {
-        outroTimer = setTimeout(playOutro, 3000);
+        outroTimer = setTimeout(() => playOutro(), 3000);
       }
     }
     window.addEventListener("message", handleMessage);
@@ -49,17 +61,6 @@ export default function DonateScreen({ onComplete }: DonateScreenProps) {
       clearTimeout(outroTimer);
     };
   }, []);
-
-  function playOutro() {
-    if (outroStarted.current) return;
-    outroStarted.current = true;
-    setShowVideo(true);
-    // Play background video for 2 seconds, then 100ms pause, then restart
-    setTimeout(() => {
-      setShowVideo(false);
-      setTimeout(onComplete, 100);
-    }, 2000);
-  }
 
   return (
     <div className="animate-fade-in relative h-full w-full overflow-hidden">
@@ -125,7 +126,7 @@ export default function DonateScreen({ onComplete }: DonateScreenProps) {
 
         {/* Yellow button — outside the card */}
         <button
-          onClick={playOutro}
+          onClick={onNotReady}
           className="relative font-black transition-opacity hover:opacity-90 active:scale-95"
           style={{
             backgroundColor: "#ffcd2b",
