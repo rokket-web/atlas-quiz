@@ -91,7 +91,7 @@ export default function OptInScreen({ onContinue, onSignup }: OptInScreenProps) 
       {/* Video background — stays put while the content layer scrolls */}
       <video
         className="absolute inset-0 w-full h-full object-cover"
-        src="/videos/11999581-hd_1920_1080_24fps.mp4"
+        src="/videos/screen-back.mp4"
         autoPlay
         loop
         muted

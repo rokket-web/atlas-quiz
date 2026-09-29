@@ -66,7 +66,7 @@ export default function DonateScreen({ onComplete }: DonateScreenProps) {
       {/* Video background — stays put while the content layer scrolls */}
       <video
         className="absolute inset-0 w-full h-full object-cover"
-        src="/videos/11999581-hd_1920_1080_24fps.mp4"
+        src="/videos/screen-back.mp4"
         autoPlay
         loop
         muted
@@ -149,8 +149,9 @@ export default function DonateScreen({ onComplete }: DonateScreenProps) {
             <video
               className="fixed inset-0 w-full h-full object-cover"
               style={{ zIndex: 2147483647, backgroundColor: "#000" }}
-              src="/videos/11999581-hd_1920_1080_24fps.mp4"
+              src="/videos/screen-back.mp4"
               autoPlay
+              loop
               muted
               playsInline
             />,
