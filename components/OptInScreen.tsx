@@ -101,7 +101,7 @@ export default function OptInScreen({ onContinue, onSignup }: OptInScreenProps) 
       {/* Overlay */}
       <div className="absolute inset-0" style={{ backgroundColor: "rgba(0,0,0,0.48)" }} />
 
-      <div className="relative flex flex-col items-center justify-center-safe h-full w-full overflow-y-auto py-6 md:py-10">
+      <div className="relative flex flex-col items-center justify-center-safe gap-5 h-full w-full overflow-y-auto py-6 md:py-10">
 
         {/* Card */}
         <div
@@ -147,6 +147,25 @@ export default function OptInScreen({ onContinue, onSignup }: OptInScreenProps) 
           {/* Virtuous email opt-in form */}
           <div ref={formRef} className="optin-form w-full text-left" />
         </div>
+
+        {/* Yellow button — outside the card; skips the opt-in and goes to donate */}
+        <button
+          onClick={onContinue}
+          className="relative font-black transition-opacity hover:opacity-90 active:scale-95"
+          style={{
+            backgroundColor: "#ffcd2b",
+            color: "#231F20",
+            fontFamily: "'Garet', sans-serif",
+            fontWeight: 800,
+            fontSize: "1.1rem",
+            padding: "1.1rem 3.5rem",
+            borderRadius: "1rem",
+            border: "none",
+            cursor: "pointer",
+          }}
+        >
+          I&apos;M NOT READY
+        </button>
       </div>
     </div>
   );

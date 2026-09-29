@@ -143,7 +143,6 @@ export default function DonateScreen({ onComplete, onNotReady }: DonateScreenPro
           I'M NOT READY
         </button>
 
-        {/* Outro — full screen background video */}
         {/* Outro — rendered into <body> on top of everything, including the GoFundMe checkout overlay */}
         {showVideo &&
           createPortal(
