@@ -26,6 +26,19 @@ type VirtuousWindow = Window & {
   virtuousForm?: (options: object) => void;
 };
 
+// Virtuous's stylesheets include global normalize rules (html line-height, h1 margins) that shift other
+// screens. They're only loaded once per page, so detach them while this screen is closed and re-attach on return.
+const VIRTUOUS_STYLESHEETS = 'link[href*="virtuoussoftware.com/forms/css"], link[href*="paymentfont"]';
+let detachedStylesheets: Element[] = [];
+// Catches stylesheets that finish loading after the screen has already closed
+let lateStylesheetObserver: MutationObserver | null = null;
+
+function detachVirtuousStylesheets() {
+  const found = [...document.querySelectorAll(VIRTUOUS_STYLESHEETS)];
+  found.forEach((el) => el.remove());
+  detachedStylesheets.push(...found);
+}
+
 export default function OptInScreen({ onContinue, onSignup }: OptInScreenProps) {
   const formRef = useRef<HTMLDivElement>(null);
   const onSignupRef = useRef(onSignup);
@@ -40,6 +53,11 @@ export default function OptInScreen({ onContinue, onSignup }: OptInScreenProps) 
     const container = formRef.current;
     if (!container) return;
     const w = window as VirtuousWindow;
+
+    lateStylesheetObserver?.disconnect();
+    lateStylesheetObserver = null;
+    document.head.prepend(...detachedStylesheets);
+    detachedStylesheets = [];
 
     // Virtuous calls settings.onSuccess after a successful submit (the embed script keeps an existing VirtuousForms object)
     w.VirtuousForms = w.VirtuousForms || {};
@@ -83,6 +101,9 @@ export default function OptInScreen({ onContinue, onSignup }: OptInScreenProps) 
     return () => {
       container.innerHTML = "";
       if (w.VirtuousForms?.settings) delete w.VirtuousForms.settings.onSuccess;
+      detachVirtuousStylesheets();
+      lateStylesheetObserver = new MutationObserver(detachVirtuousStylesheets);
+      lateStylesheetObserver.observe(document.head, { childList: true });
     };
   }, []);
 
