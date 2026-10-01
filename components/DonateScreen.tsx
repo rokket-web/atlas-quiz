@@ -91,11 +91,18 @@ export default function DonateScreen({ onComplete, onNotReady }: DonateScreenPro
           {/* Left column: logo + copy */}
           <div className="flex flex-col items-center md:items-start md:flex-1 md:pr-[30px]" style={{ gap: "1.2rem" }}>
             {/* Logo */}
-            <img
-              src="/atlas-logo.png"
-              alt="Atlas Free"
-              style={{ width: 72, height: 72, objectFit: "contain" }}
-            />
+            <div className="flex items-center justify-center md:justify-start" style={{ gap: 20 }}>
+              <img
+                src="/atlas-logo.png"
+                alt="Atlas Free"
+                style={{ width: 72, height: 72, objectFit: "contain" }}
+              />
+              <img
+                src="/thinq.webp"
+                alt="Thinq"
+                style={{ height: 72, width: "auto", maxWidth: 160, objectFit: "contain" }}
+              />
+            </div>
 
             {/* Copy */}
             <p

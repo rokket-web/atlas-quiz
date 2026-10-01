@@ -134,11 +134,18 @@ export default function OptInScreen({ onContinue, onSignup }: OptInScreenProps) 
           }}
         >
           {/* Logo */}
-          <img
-            src="/atlas-logo.png"
-            alt="Atlas Free"
-            style={{ width: 72, height: 72, objectFit: "contain" }}
-          />
+          <div className="flex items-center justify-center" style={{ gap: 20 }}>
+            <img
+              src="/atlas-logo.png"
+              alt="Atlas Free"
+              style={{ width: 72, height: 72, objectFit: "contain" }}
+            />
+            <img
+              src="/thinq.webp"
+              alt="Thinq"
+              style={{ height: 72, width: "auto", maxWidth: 160, objectFit: "contain" }}
+            />
+          </div>
 
           {/* Headline */}
           <p
