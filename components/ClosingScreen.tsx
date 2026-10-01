@@ -44,7 +44,7 @@ export default function ClosingScreen({ onContinue }: ClosingScreenProps) {
       clearInterval(bandInterval);
       clearInterval(flashInterval);
       onContinue();
-    }, 5000);
+    }, 200);
 
     return () => {
       clearInterval(bandInterval);

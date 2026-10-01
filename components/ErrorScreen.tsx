@@ -21,11 +21,11 @@ export default function ErrorScreen({ onContinue }: ErrorScreenProps) {
       }, 300);
     }, 150);
 
-    // After 5 seconds, proceed
+    // After 200ms, proceed
     const timeout = setTimeout(() => {
       clearInterval(interval);
       onContinue();
-    }, 5000);
+    }, 200);
 
     return () => {
       clearTimeout(reveal);
