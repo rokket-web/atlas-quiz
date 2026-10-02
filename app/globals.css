@@ -93,6 +93,18 @@ form[id*="vcrm"] .v_ig textarea {
   border-radius: 5px !important;
 }
 
+/* "SMS Consent" heading/label renders white by default; the card is white so force it black */
+form[id*="vcrm"] legend,
+form[id*="vcrm"] label,
+form[id*="vcrm"] h1,
+form[id*="vcrm"] h2,
+form[id*="vcrm"] h3,
+form[id*="vcrm"] h4,
+form[id*="vcrm"] h5,
+form[id*="vcrm"] h6 {
+  color: #000 !important;
+}
+
 form[id*="vcrm"] .v_ig.v_error input,
 form[id*="vcrm"] .v_ig.v_error select,
 form[id*="vcrm"] .v_ig.v_error textarea {
